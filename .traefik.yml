@@ -1,8 +1,8 @@
-displayName: Traefik Real IP
+displayName: Traefik Edge Client IP
 type: middleware
-import: github.com/soulbalz/traefik-real-ip
+import: github.com/ttys3/traefik-edge-client-ip
 
-summary: When traefik is deployed behind a load balancer, it should get the real IP from the X-Forwarded-For or Cf-Connecting-Ip (if from Cloudflare) header. 
+summary: When traefik is deployed as revers proxy server and directly accept traffic from client, we need to set client connection IP to a header to allow pod service get it.
 
 testData:
   excludednets:
