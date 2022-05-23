@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	plugin "github.com/soulbalz/traefik-real-ip"
+	plugin "github.com/ttys3/traefik-edge-client-ip"
 )
 
 func TestNew(t *testing.T) {
@@ -61,7 +61,7 @@ func TestNew(t *testing.T) {
 
 			handler.ServeHTTP(recorder, req)
 
-			assertHeader(t, req, "X-Real-Ip", test.expected)
+			assertHeader(t, req, "X-Edge-Client-Ip", test.expected)
 		})
 	}
 }

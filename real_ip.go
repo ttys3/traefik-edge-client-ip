@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	xRealIP        = "X-Real-Ip"
+	xRealIP        = "X-Edge-Client-Ip"
 	xForwardedFor  = "X-Forwarded-For"
 	cfConnectingIP = "Cf-Connecting-Ip"
 )
@@ -68,6 +68,14 @@ func (r *RealIPOverWriter) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
 	if realIP == "" {
 		realIP = req.Header.Get(cfConnectingIP)
 		req.Header.Set(xForwardedFor, realIP)
+	}
+
+	// as edge gateway or reverse proxy server, no CDN or loadbalance in front
+	if realIP == "" {
+		var err error
+		if realIP, _, err = net.SplitHostPort(req.RemoteAddr); err == nil && net.ParseIP(realIP) != nil {
+			req.Header.Set(xForwardedFor, realIP)
+		}
 	}
 
 	req.Header.Set(xRealIP, realIP)
