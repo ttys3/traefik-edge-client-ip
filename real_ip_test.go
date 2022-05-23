@@ -1,4 +1,4 @@
-package traefik_real_ip_test
+package traefik_edge_client_ip_test
 
 import (
 	"context"
@@ -16,7 +16,7 @@ func TestNew(t *testing.T) {
 	ctx := context.Background()
 	next := http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {})
 
-	handler, err := plugin.New(ctx, next, cfg, "traefik-real-ip")
+	handler, err := plugin.New(ctx, next, cfg, "traefik-edge-client-ip")
 	if err != nil {
 		t.Fatal(err)
 	}
