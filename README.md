@@ -15,9 +15,9 @@ pilot:
 
 experimental:
   plugins:
-    traefik-real-ip:
-      modulename: github.com/soulbalz/traefik-real-ip
-      version: v1.0.3
+    traefik-edge-client-ip:
+      modulename: github.com/ttys3/traefik-edge-client-ip
+      version: v2.0.0
 ```
 
 ### Dynamic configuration
@@ -31,7 +31,7 @@ http:
       entryPoints:
         - http
       middlewares:
-        - traefik-real-ip
+        - traefik-edge-client-ip
 
   services:
    service-whoami:
@@ -40,9 +40,9 @@ http:
           - url: http://127.0.0.1:5000
   
   middlewares:
-    traefik-real-ip:
+    traefik-edge-client-ip:
       plugin:
-        traefik-real-ip:
+        traefik-edge-client-ip:
           excludednets:
             - "1.1.1.1/24"
 ```
@@ -78,8 +78,8 @@ spec:
             - --entrypoints.web.Address=:80
             - --providers.kubernetescrd
             - --pilot.token={YOUR_PILOT_TOKEN}
-            - --experimental.plugins.traefik-real-ip.modulename=github.com/soulbalz/traefik-real-ip
-            - --experimental.plugins.traefik-real-ip.version=v1.0.3
+            - --experimental.plugins.traefik-edge-client-ip.modulename=github.com/ttys3/traefik-edge-client-ip
+            - --experimental.plugins.traefik-edge-client-ip.version=v2.0.0
           ports:
             - name: web
               containerPort: 80
@@ -95,10 +95,10 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: traefik-real-ip
+  name: traefik-edge-client-ip
 spec:
   plugin:
-    traefik-real-ip:
+    traefik-edge-client-ip:
       excludednets:
         - "1.1.1.1/24"
 
@@ -118,7 +118,7 @@ spec:
         - name: example-service
           port: 80
       middlewares:
-        - name: traefik-real-ip
+        - name: traefik-edge-client-ip
 ```
 
 #
