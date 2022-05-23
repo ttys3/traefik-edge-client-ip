@@ -4,10 +4,11 @@ If Traefik is behind a load balancer, it won't be able to get the Real IP from t
 
 This plugin solves this issue by overwriting the X-Real-Ip with an IP from the X-Forwarded-For or Cf-Connecting-Ip (if from Cloudflare) header. The real IP will be the first one that is not included in any of the CIDRs passed as the ExcludedNets parameter. The evaluation of the X-Forwarded-For or Cf-Connecting-Ip (if from Cloudflare) IPs will go from the last to the first one.
 
-#
 ## Configuration
 
 ### Static
+
+load plugin via pilot auto download:
 
 ```yaml
 pilot:
@@ -17,7 +18,25 @@ experimental:
   plugins:
     traefik-edge-client-ip:
       modulename: github.com/ttys3/traefik-edge-client-ip
-      version: v2.0.0
+      version: v2.0.1
+```
+
+load plugin via local mode:
+
+> The plugins must be placed in `./plugins-local` directory, which should be in the **working directory** of the process running **the Traefik binary**.
+
+it is better to specific traefik **working directory** via `WorkingDirectory` in a systemd unit file, like this:
+
+```ini
+WorkingDirectory=/usr/local/bin
+ExecStart=/usr/local/bin/traefik --configFile=/etc/traefik/traefik.yml
+```
+
+```yaml
+experimental:
+  localPlugins:
+    traefik-edge-client-ip:
+      modulename: github.com/ttys3/traefik-edge-client-ip
 ```
 
 ### Dynamic configuration
@@ -121,7 +140,6 @@ spec:
         - name: traefik-edge-client-ip
 ```
 
-#
 ## Configuration documentation
 
 Supported configurations per body
@@ -130,4 +148,9 @@ Supported configurations per body
 | :--               | :--                 | :--         | :--         |
 | excludednets      | []string            | No          | IP or IP range to exclude forward IP |
 
-#
+## Ref doc
+
+Local Mode
+https://github.com/traefik/plugindemo#local-mode
+
+https://developers.cloudflare.com/fundamentals/get-started/reference/http-request-headers/
